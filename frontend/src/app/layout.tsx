@@ -39,7 +39,8 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}  ${
           isDark ? 'dark' : ''
-        } antialiased flex`}
+        } antialiased flex `}
+        style={{ maxWidth: '1920px', margin: '0 auto' }}
       >
         <AppProvider>
           <AppSidebar />
