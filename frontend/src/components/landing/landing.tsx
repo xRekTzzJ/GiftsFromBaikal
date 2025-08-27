@@ -1,11 +1,11 @@
+import { FeaturesBlock } from './features-block'
 import { TypingBlock } from './typing-block'
-import { YandexSection } from './yandex-section'
 
 export function Landing() {
   return (
-    <>
+    <main>
       <TypingBlock />
-      <YandexSection />
-    </>
+      <FeaturesBlock />
+    </main>
   )
 }
