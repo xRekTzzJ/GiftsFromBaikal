@@ -12,8 +12,8 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import Link from "next/link";
-import {Route} from "@/constants";
+import { Route } from "@/constants"
+import Link from "next/link"
 
 const data = {
     versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
@@ -32,7 +32,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar {...props}>
             <SidebarHeader className="px-4 py-4">
-                <Link href={Route.HOME} className={'text-lg font-bold'} style={{width: 'fit-content'}}>Подарки с
+                <Link href={Route.HOME} className={'text-lg font-bold duration-300 hover:opacity-80'} >Подарки с
                     Байкала</Link>
             </SidebarHeader>
             <SidebarContent>

@@ -1,15 +1,11 @@
 "use client"
 
+import { ThemeService } from "@/services/theme-service"
+
 export class ServiceContainer {
-    private services = new Map<string, any>()
+    private readonly _themeService = new ThemeService();
 
-    public register<T>(key: string, service: T) {
-        this.services.set(key, service)
-    }
-
-    public get<T>(name: string): T {
-        const service = this.services.get(name)
-        if (!service) throw new Error(`Service ${name} not found`)
-        return service;
+    public themeService() {
+        return this._themeService;
     }
 }

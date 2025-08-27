@@ -1,15 +1,12 @@
 "use client"
 
-import {SidebarProvider} from "@/components/ui/sidebar";
-import {ServiceContainerProvider} from "@/provider/service-container-provider";
-import {ServiceContainer, ThemeService} from "@/services";
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { ServiceContainerProvider } from "@/provider/service-container-provider"
 
 
 export default function AppProvider({children}: { children: React.ReactNode }) {
-    const sc = new ServiceContainer();
-    sc.register('ThemeService', new ThemeService());
 
-    return <ServiceContainerProvider container={sc}>
+    return <ServiceContainerProvider>
         <SidebarProvider>
             {children}
         </SidebarProvider>
