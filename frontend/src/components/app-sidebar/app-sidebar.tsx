@@ -16,6 +16,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { Route } from '@/constants'
+import { EventType } from '@/constants/events/Events'
 import { useServiceContainer } from '@/hooks'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -37,19 +38,20 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const sc = useServiceContainer()
   const eventAggregator = sc.eventAgregator()
-  const [username, setUsername] = useState<string | null>(null)
+  const loginService = sc.loginService()
+  const [isLogin, setIsLogin] = useState<boolean>(false)
 
   useEffect(() => {
-    const unsubLogin = eventAggregator.subscribe<{ username: string }>(
-      'login',
-      (payload) => {
-        setUsername(payload.username)
+    const unsubLogin = eventAggregator.subscribe<void>(EventType.LOGIN, () => {
+      setIsLogin(loginService.isLoggedIn())
+    })
+
+    const unsubLogout = eventAggregator.subscribe<void>(
+      EventType.LOGOUT,
+      () => {
+        setIsLogin(loginService.isLoggedIn())
       }
     )
-
-    const unsubLogout = eventAggregator.subscribe('logout', () => {
-      setUsername(null)
-    })
 
     return () => {
       unsubLogin()
@@ -86,12 +88,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      {username}
-      <div className="px-4 py-4 mt-auto">
-        <Button className="w-full" asChild>
-          <Link href={Route.LOGIN}>Войти</Link>
-        </Button>
-      </div>
+      {isLogin ? (
+        <div className="px-4 py-4 mt-auto">
+          <Button
+            className="w-full cursor-pointer"
+            onClick={() => loginService.logout()}
+          >
+            Выйти
+          </Button>
+        </div>
+      ) : (
+        <div className="px-4 py-4 mt-auto">
+          <Button className="w-full" asChild>
+            <Link href={Route.LOGIN}>Войти</Link>
+          </Button>
+        </div>
+      )}
       <SidebarRail />
     </Sidebar>
   )

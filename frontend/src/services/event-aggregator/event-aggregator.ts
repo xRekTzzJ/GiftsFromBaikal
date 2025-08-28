@@ -4,10 +4,7 @@ export class EventAggregator {
   private events: Map<string, EventHandler[]> = new Map()
 
   /** Подписка на событие. Возвращает функцию отписки */
-  public subscribe<T = any>(
-    event: string,
-    handler: EventHandler<T>
-  ): () => void {
+  public subscribe<T>(event: string, handler: EventHandler<T>): () => void {
     if (!this.events.has(event)) {
       this.events.set(event, [])
     }
