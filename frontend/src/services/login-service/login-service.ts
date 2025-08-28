@@ -15,13 +15,31 @@ export class LoginService {
   private sessionKey = 'user_session'
   private api: ApiAccessService
   private ea: EventAggregator
+  private session: SessionData | null = null
 
   constructor(
     apiAccessService: ApiAccessService,
-    eventAgregator: EventAggregator
+    eventAggregator: EventAggregator
   ) {
     this.api = apiAccessService
-    this.ea = eventAgregator
+    this.ea = eventAggregator
+  }
+
+  // вызывается только на клиенте после монтирования компонента
+  public initClientSession() {
+    if (typeof window === 'undefined') return // защита на сервере
+
+    const storedSession = localStorage.getItem(this.sessionKey)
+    if (storedSession) {
+      try {
+        this.session = JSON.parse(storedSession) as SessionData
+        if (this.session?.token) {
+          this.ea.publish('login', { username: this.session.username })
+        }
+      } catch {
+        this.session = null
+      }
+    }
   }
 
   public async login(username: string, password: string): Promise<boolean> {
@@ -32,11 +50,12 @@ export class LoginService {
     )
 
     if (res.status === 200 && res.data?.token) {
-      const session: SessionData = {
-        token: res.data.token,
-        username: username,
+      const session: SessionData = { token: res.data.token, username }
+      this.session = session
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(this.sessionKey, JSON.stringify(session))
       }
-      localStorage.setItem(this.sessionKey, JSON.stringify(session))
 
       this.ea.publish('login', { username })
       return true
@@ -46,30 +65,22 @@ export class LoginService {
   }
 
   public logout() {
-    localStorage.removeItem(this.sessionKey)
+    this.session = null
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.sessionKey)
+    }
+    this.ea.publish('logout')
   }
 
   public getToken(): string | null {
-    const session = this.getSession()
-    return session?.token || null
+    return this.session?.token || null
   }
 
   public getUsername(): string | null {
-    const session = this.getSession()
-    return session?.username || null
+    return this.session?.username || null
   }
 
   public isLoggedIn(): boolean {
     return !!this.getToken()
-  }
-
-  private getSession(): SessionData | null {
-    const sessionStr = localStorage.getItem(this.sessionKey)
-    if (!sessionStr) return null
-    try {
-      return JSON.parse(sessionStr) as SessionData
-    } catch {
-      return null
-    }
   }
 }
