@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Button } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -16,14 +17,13 @@ import { Route } from '@/constants'
 import Link from 'next/link'
 
 const data = {
-  versions: ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'],
   navMain: [
     {
       title: 'Основное',
       items: [
         {
           title: 'Каталог',
-          url: '#',
+          url: Route.CATALOG,
         },
       ],
     },
@@ -32,7 +32,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className="flex flex-col">
       <SidebarHeader className="px-4 py-4">
         <Link
           href={Route.HOME}
@@ -41,7 +41,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           Подарки с Байкала 🌊
         </Link>
       </SidebarHeader>
-      <SidebarContent>
+
+      <SidebarContent className="flex-1">
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
@@ -50,7 +51,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>{item.title}</a>
+                      <Link href={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -59,6 +60,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <div className="px-4 py-4 mt-auto">
+        <Button className="w-full" asChild>
+          <Link href={Route.LOGIN}>Войти</Link>
+        </Button>
+      </div>
       <SidebarRail />
     </Sidebar>
   )
