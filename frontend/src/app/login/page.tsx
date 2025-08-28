@@ -1,5 +1,6 @@
 'use client'
 
+import { useServiceContainer } from '@/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Lock, User } from 'lucide-react'
@@ -7,8 +8,9 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+// Меняем email на login
 const loginSchema = z.object({
-  email: z.string().email('Введите корректный email'),
+  login: z.string().min(6, 'Введите логин'),
   password: z.string().min(6, 'Минимум 6 символов'),
 })
 
@@ -25,11 +27,12 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   })
 
+  const sc = useServiceContainer()
+
   const onSubmit = async (data: LoginForm) => {
     setLoading(true)
     try {
-      console.log('Авторизация:', data)
-      // тут axios.post('/api/login', data)
+      sc.loginService().login(data.login, data.password)
     } catch (err) {
       console.error(err)
     } finally {
@@ -50,10 +53,10 @@ export default function LoginPage() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Email */}
+          {/* Login */}
           <div>
             <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
-              Email
+              Логин
             </label>
             <div className="relative">
               <User
@@ -61,15 +64,15 @@ export default function LoginPage() {
                 size={18}
               />
               <input
-                type="email"
-                placeholder="you@example.com"
-                {...register('email')}
+                type="text"
+                placeholder="Ваш логин"
+                {...register('login')}
                 className="w-full pl-10 pr-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
               />
             </div>
-            {errors.email && (
+            {errors.login && (
               <p className="text-sm text-red-500 mt-1">
-                {errors.email.message}
+                {errors.login.message}
               </p>
             )}
           </div>
