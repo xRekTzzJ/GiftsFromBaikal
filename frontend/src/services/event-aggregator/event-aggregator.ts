@@ -1,3 +1,5 @@
+'use client'
+
 type EventHandler<T = any> = (payload: T) => void
 
 export class EventAggregator {

@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-// Меняем email на login
 const loginSchema = z.object({
   login: z.string().min(6, 'Введите логин'),
   password: z.string().min(6, 'Минимум 6 символов'),

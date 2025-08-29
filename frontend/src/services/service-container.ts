@@ -8,13 +8,13 @@ import { LoginService } from './login-service'
 export class ServiceContainer {
   private readonly _themeService = new ThemeService()
 
-  private readonly _eventAgregator = new EventAggregator()
+  private readonly _eventAggregator = new EventAggregator()
 
   private readonly _apiAccessService = new ApiAccessService()
 
   private readonly _loginService = new LoginService(
     this.apiAccessService(),
-    this.eventAgregator()
+    this.eventAggregator()
   )
 
   public themeService() {
@@ -29,7 +29,7 @@ export class ServiceContainer {
     return this._apiAccessService
   }
 
-  public eventAgregator() {
-    return this._eventAgregator
+  public eventAggregator() {
+    return this._eventAggregator
   }
 }

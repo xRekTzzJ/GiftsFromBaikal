@@ -1,36 +1,43 @@
-import { ThemeType } from "@/constants"
-import Cookies from "js-cookie"
+'use client'
+import { ThemeType } from '@/constants'
 
 export class ThemeService {
-    constructor() {
-        if (typeof window !== "undefined") {
-            const themeFromCookie = Cookies.get("theme") as ThemeType | undefined;
-            if (themeFromCookie) {
-                this._currentTheme = themeFromCookie;
-                this.applyTheme(this._currentTheme);
-            }
-        }
-    }
+  private _currentTheme: ThemeType = ThemeType.Light
 
-    private _currentTheme: ThemeType = ThemeType.Light;
-
-    public get currentTheme(): ThemeType {
-        return this._currentTheme;
+  constructor() {
+    const savedTheme = localStorage.getItem('theme') as ThemeType | null
+    if (savedTheme) {
+      this._currentTheme = savedTheme
+      this.applyTheme(this._currentTheme)
+    } else {
+      // можно по умолчанию использовать prefers-color-scheme
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches
+      this._currentTheme = prefersDark ? ThemeType.Dark : ThemeType.Light
+      this.applyTheme(this._currentTheme)
+      localStorage.setItem('theme', this._currentTheme)
     }
+  }
 
-    public toggleCurrentTheme() {
-        this._currentTheme = this._currentTheme === ThemeType.Light ? ThemeType.Dark : ThemeType.Light;
-        this.applyTheme(this._currentTheme);
-        Cookies.set("theme", this._currentTheme, {expires: 365, path: "/"});
-    }
+  public get currentTheme(): ThemeType {
+    return this._currentTheme
+  }
 
-    private applyTheme(theme: ThemeType) {
-        if (typeof document !== "undefined") {
-            if (theme === ThemeType.Dark) {
-                document.body.classList.add("dark");
-            } else {
-                document.body.classList.remove("dark");
-            }
-        }
+  public toggleCurrentTheme() {
+    this._currentTheme =
+      this._currentTheme === ThemeType.Light ? ThemeType.Dark : ThemeType.Light
+    this.applyTheme(this._currentTheme)
+    localStorage.setItem('theme', this._currentTheme)
+  }
+
+  private applyTheme(theme: ThemeType) {
+    if (typeof document !== 'undefined') {
+      if (theme === ThemeType.Dark) {
+        document.body.classList.add('dark')
+      } else {
+        document.body.classList.remove('dark')
+      }
     }
+  }
 }

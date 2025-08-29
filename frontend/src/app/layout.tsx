@@ -1,13 +1,13 @@
+'use client'
+
 import { AppSidebar } from '@/components/app-sidebar'
 import Footer from '@/components/footer/footer'
 import { Header } from '@/components/header'
 import { SidebarInset } from '@/components/ui/sidebar'
-import { CookieStoreType, ThemeType } from '@/constants'
+import { ThemeType } from '@/constants'
 import AppProvider from '@/provider/app-provider'
-import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { cookies } from 'next/headers'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './globals.css'
 
 const geistSans = Geist({
@@ -20,24 +20,29 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'Подарки с Байкала 🌊',
-  description: 'Открой для себя настоящие подарки с Байкала',
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const cookieStore = await cookies()
-  const theme = cookieStore.get(CookieStoreType.THEME)?.value as ThemeType
-  const isDark = theme === ThemeType.Dark
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const theme = localStorage.getItem('theme') as ThemeType | null
+    if (theme === ThemeType.Dark) {
+      setIsDark(true)
+      document.body.classList.add('dark')
+    } else {
+      setIsDark(false)
+      document.body.classList.remove('dark')
+    }
+  }, [])
 
   return (
     <html lang="ru">
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  ${
+        title="Подарки с Байкала 🌊"
+        className={`${geistSans.variable} ${geistMono.variable} ${
           isDark ? 'dark' : ''
         } antialiased flex bg-secondary`}
         style={{ maxWidth: '1920px', margin: '0 auto' }}

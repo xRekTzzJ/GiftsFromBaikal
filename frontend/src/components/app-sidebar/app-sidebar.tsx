@@ -37,7 +37,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const sc = useServiceContainer()
-  const eventAggregator = sc.eventAgregator()
+  const eventAggregator = sc.eventAggregator()
   const loginService = sc.loginService()
   const [isLogin, setIsLogin] = useState<boolean>(false)
 
@@ -49,7 +49,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const unsubLogout = eventAggregator.subscribe<void>(
       EventType.LOGOUT,
       () => {
-        setIsLogin(loginService.isLoggedIn())
+        setIsLogin(false)
       }
     )
 

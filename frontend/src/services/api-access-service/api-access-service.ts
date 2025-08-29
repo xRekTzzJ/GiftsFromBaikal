@@ -1,3 +1,5 @@
+'use client'
+
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { LoginService } from '../login-service'
 
