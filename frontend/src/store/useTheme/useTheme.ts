@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Theme } from "../../constants/theme";
+import { Theme } from "../../constants";
 
 interface ThemeState {
   theme: Theme;

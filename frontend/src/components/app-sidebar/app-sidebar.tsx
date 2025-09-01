@@ -31,7 +31,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props} className="flex flex-col">
       <SidebarHeader className="px-4 py-4">
         <Link
-          to="/"
+          to={"/"}
           className={"text-lg font-bold duration-300 hover:opacity-80"}
         >
           Подарки с Байкала 🌊
