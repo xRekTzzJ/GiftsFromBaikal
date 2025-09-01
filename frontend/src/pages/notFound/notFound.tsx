@@ -1,5 +1,6 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/src/store";
+import { Link } from "@tanstack/react-router";
 const Snow = () => {
   const { theme } = useTheme();
   const color = theme === "dark" ? "white" : "rgba(59,130,246,0.7)";
@@ -90,18 +91,18 @@ export const NotFoundPage = () => {
   if (isMobile) {
     return (
       <div className="flex flex-col mx-8 justify-center align-middle mt-auto mb-auto h-full">
-        <h1 className="text-6xl font-bold text-blue-700 dark:text-blue-300 mb-4 z-20 relative">
+        <h1 className="text-6xl text-center font-bold text-blue-700 dark:text-blue-300 mb-4 z-20 relative">
           404
         </h1>
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6 z-20 relative">
+        <p className="text-xl text-center text-gray-700 dark:text-gray-300 mb-6 z-20 relative">
           Кажется, эта страница утонула в Байкале…
         </p>
-        <a
-          href="/"
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition z-20 relative"
+        <Link
+          to="/"
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg text-center hover:bg-blue-700 transition z-20 relative"
         >
           Вернуться на главную
-        </a>
+        </Link>
       </div>
     );
   }
@@ -117,12 +118,12 @@ export const NotFoundPage = () => {
       <p className="text-xl text-gray-700 dark:text-gray-300 mb-6 z-20 relative">
         Кажется, эта страница утонула в Байкале…
       </p>
-      <a
-        href="/"
+      <Link
+        to="/"
         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition z-20 relative"
       >
         Вернуться на главную
-      </a>
+      </Link>
     </div>
   );
 };
