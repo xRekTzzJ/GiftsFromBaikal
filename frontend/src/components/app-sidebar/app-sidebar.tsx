@@ -19,7 +19,7 @@ const data = {
       items: [
         {
           title: "Каталог",
-          url: "/catalogs",
+          url: "/catalog",
         },
       ],
     },
