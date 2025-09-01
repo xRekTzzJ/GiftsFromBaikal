@@ -1,8 +1,3 @@
-'use client'
-
-import * as React from 'react'
-
-import { Button } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -14,57 +9,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from '@/components/ui/sidebar'
-import { Route } from '@/constants'
-import { EventType } from '@/constants/events/Events'
-import { useServiceContainer } from '@/hooks'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-
+} from "@/components/ui/sidebar";
+import { Link } from "@tanstack/react-router";
+import * as React from "react";
 const data = {
   navMain: [
     {
-      title: 'Основное',
+      title: "Основное",
       items: [
         {
-          title: 'Каталог',
-          url: Route.CATALOG,
+          title: "Каталог",
+          url: "/catalogs",
         },
       ],
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const sc = useServiceContainer()
-  const eventAggregator = sc.eventAggregator()
-  const loginService = sc.loginService()
-  const [isLogin, setIsLogin] = useState<boolean>(false)
-
-  useEffect(() => {
-    const unsubLogin = eventAggregator.subscribe<void>(EventType.LOGIN, () => {
-      setIsLogin(loginService.isLoggedIn())
-    })
-
-    const unsubLogout = eventAggregator.subscribe<void>(
-      EventType.LOGOUT,
-      () => {
-        setIsLogin(false)
-      }
-    )
-
-    return () => {
-      unsubLogin()
-      unsubLogout()
-    }
-  }, [])
-
   return (
     <Sidebar {...props} className="flex flex-col">
       <SidebarHeader className="px-4 py-4">
         <Link
-          href={Route.HOME}
-          className={'text-lg font-bold duration-300 hover:opacity-80'}
+          to="/"
+          className={"text-lg font-bold duration-300 hover:opacity-80"}
         >
           Подарки с Байкала 🌊
         </Link>
@@ -79,7 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.url}>{item.title}</Link>
+                      <Link to={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -88,23 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      {isLogin ? (
-        <div className="px-4 py-4 mt-auto">
-          <Button
-            className="w-full cursor-pointer"
-            onClick={() => loginService.logout()}
-          >
-            Выйти
-          </Button>
-        </div>
-      ) : (
-        <div className="px-4 py-4 mt-auto">
-          <Button className="w-full" asChild>
-            <Link href={Route.LOGIN}>Войти</Link>
-          </Button>
-        </div>
-      )}
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

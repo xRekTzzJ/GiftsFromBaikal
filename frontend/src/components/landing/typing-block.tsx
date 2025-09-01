@@ -1,40 +1,40 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 
 export function TypingBlock() {
   // TODO: Получать материалы из БД для того, чтобы можно было вручную менять материалы
   const materials = useMemo(
-    () => ['КАМНЯ', 'ДЕРЕВА', 'МИНЕРАЛОВ', 'НАТУРАЛЬНОЙ КОЖИ', 'МЕХА'],
+    () => ["КАМНЯ", "ДЕРЕВА", "МИНЕРАЛОВ", "НАТУРАЛЬНОЙ КОЖИ", "МЕХА"],
     []
-  )
+  );
 
-  const [currentMaterial, setCurrentMaterial] = useState(materials[0])
-  const [displayedText, setDisplayedText] = useState('')
-  const [index, setIndex] = useState(0)
+  const [currentMaterial, setCurrentMaterial] = useState(materials[0]);
+  const [displayedText, setDisplayedText] = useState("");
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    let typingInterval: NodeJS.Timeout
+    let typingInterval: NodeJS.Timeout;
 
     if (displayedText.length < currentMaterial.length) {
       typingInterval = setInterval(() => {
-        setDisplayedText((prev) => currentMaterial.slice(0, prev.length + 1))
-      }, 100)
+        setDisplayedText((prev) => currentMaterial.slice(0, prev.length + 1));
+      }, 100);
     } else {
       const timeout = setTimeout(() => {
-        setDisplayedText('')
-        setIndex((prevIndex) => (prevIndex + 1) % materials.length)
-      }, 2000)
-      return () => clearTimeout(timeout)
+        setDisplayedText("");
+        setIndex((prevIndex) => (prevIndex + 1) % materials.length);
+      }, 2000);
+      return () => clearTimeout(timeout);
     }
 
-    return () => clearInterval(typingInterval)
-  }, [displayedText, currentMaterial, materials.length])
+    return () => clearInterval(typingInterval);
+  }, [displayedText, currentMaterial, materials.length]);
 
   useEffect(() => {
-    setCurrentMaterial(materials[index])
-  }, [index, materials])
+    setCurrentMaterial(materials[index]);
+  }, [index, materials]);
 
   return (
     <>
@@ -57,7 +57,7 @@ export function TypingBlock() {
               transition={{ duration: 0.2 }}
               className="ml-2 inline-block overflow-hidden whitespace-nowrap border-r-2 border-red-400 text-red-400"
               style={{
-                animation: 'blink 0.7s step-end infinite',
+                animation: "blink 0.7s step-end infinite",
               }}
             >
               {displayedText}
@@ -65,7 +65,7 @@ export function TypingBlock() {
           </h1>
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes blink {
           0% {
             border-color: transparent;
@@ -79,5 +79,5 @@ export function TypingBlock() {
         }
       `}</style>
     </>
-  )
+  );
 }

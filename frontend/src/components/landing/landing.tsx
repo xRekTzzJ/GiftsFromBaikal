@@ -1,6 +1,6 @@
-'use client'
-import { FeaturesBlock } from './features-block'
-import { TypingBlock } from './typing-block'
+"use client";
+import { FeaturesBlock } from "./features-block";
+import { TypingBlock } from "./typing-block";
 
 export function Landing() {
   return (
@@ -8,5 +8,5 @@ export function Landing() {
       <TypingBlock />
       <FeaturesBlock />
     </main>
-  )
+  );
 }

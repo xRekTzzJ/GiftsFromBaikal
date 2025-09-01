@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   IconInfoHexagon,
   IconThumbUp,
   IconTruckDelivery,
-} from '@tabler/icons-react'
+} from "@tabler/icons-react";
 
 export function FeaturesBlock() {
   const features = [
     {
       icon: <IconThumbUp className="w-10 h-10 text-primary" />,
-      title: 'Высокое качество',
-      description: 'Только натуральные материалы и ручная работа',
+      title: "Высокое качество",
+      description: "Только натуральные материалы и ручная работа",
     },
     {
       icon: <IconTruckDelivery className="w-10 h-10 text-primary" />,
-      title: 'Быстрая доставка',
-      description: 'Отправка по всей России',
+      title: "Быстрая доставка",
+      description: "Отправка по всей России",
     },
     {
       icon: <IconInfoHexagon className="w-10 h-10 text-primary" />,
-      title: 'Поддержка',
-      description: 'Помогаем с выбором и отвечаем на вопросы',
+      title: "Поддержка",
+      description: "Помогаем с выбором и отвечаем на вопросы",
     },
-  ]
+  ];
 
   return (
     <section className="w-full py-12 sm:py-16 bg-card">
@@ -49,5 +49,5 @@ export function FeaturesBlock() {
         ))}
       </div>
     </section>
-  )
+  );
 }
