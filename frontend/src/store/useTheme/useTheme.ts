@@ -6,10 +6,19 @@ interface ThemeState {
   toggleTheme: () => void;
 }
 
-export const useTheme = create<ThemeState>((set) => ({
-  theme: Theme.DARK,
-  toggleTheme: () =>
-    set((state) => ({
-      theme: state.theme === Theme.DARK ? Theme.LIGHT : Theme.DARK,
-    })),
-}));
+export const useTheme = create<ThemeState>((set) => {
+  const currentTheme = (localStorage.getItem("theme") as Theme) ?? Theme.DARK;
+
+  return {
+    theme: currentTheme,
+    toggleTheme: () =>
+      set((state) => {
+        const newTheme = state.theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
+
+        localStorage.setItem("theme", newTheme);
+        return {
+          theme: newTheme,
+        };
+      }),
+  };
+});
